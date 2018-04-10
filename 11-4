@@ -1,0 +1,104 @@
+#include <fcntl.h> //_O_U16TEXT
+#include <io.h>    //_setmode()
+#include <stdio.h>
+#include <string.h>
+
+struct SinhVien {
+	wchar_t *MSSV;
+	wchar_t *HoTen;
+	wchar_t *Khoa;
+	wchar_t *KhoaHoc;
+	wchar_t *NgaySinh;
+	wchar_t *HACN;
+	wchar_t *MTBT[1000];
+	wchar_t *SoThich;
+};
+typedef struct SinhVien SV;
+/*
+* encoding: UTF-8 with BOM
+*
+* ISSUE: Really weird bug at fgetws() with stdin, doesn't read the newline character
+*        => getwc(stdin) to ignore it.
+*/	
+void wmain()
+{
+	_setmode(_fileno(stdout), _O_U16TEXT); //needed for output
+	_setmode(_fileno(stdin), _O_U16TEXT); //needed for input
+	// nhớ chuyển font của console sang Consolas (size 16) thay str = wcs
+
+	wprintf(L"%ls", L"Chương trình đọc và xuất chuỗi tiếng Việt\n\n");
+	
+	
+	FILE* fin = _wfopen(L"list1.csv", L"r, ccs=UTF-8");
+	if (!fin) {
+		wprintf(L"Không thể đọc file list1.csv\n");
+	}
+	else
+	{
+		SV *ListStudents = new SV[256];
+		wchar_t *buf = new wchar_t[256];
+
+		wchar_t *tmp = NULL;
+		int i = 0;
+		int j = 0;
+		int flag = 0;
+		while (fgetws(buf, 255, fin) != NULL)
+		{
+			if ((wcslen(buf) > 0) && (buf[wcslen(buf) - 1] == '\n'))
+				buf[wcslen(buf) - 1] = '\0';
+			tmp = wcstok(NULL, L",");
+			ListStudents[i].MSSV = tmp;
+			delete[]tmp;
+			tmp = wcstok(NULL, L",");
+			ListStudents[i].HoTen = tmp;
+
+			tmp = wcstok(NULL, L",");
+			ListStudents[i].Khoa = tmp;
+
+			tmp = wcstok(buf, L",");
+			ListStudents[i].KhoaHoc = tmp;
+
+
+			tmp = wcstok(NULL, L",");
+			ListStudents[i].NgaySinh = tmp;
+
+			tmp = wcstok(NULL, L",");
+			ListStudents[i].HACN = tmp;
+
+			tmp = wcstok(NULL, L",");
+			/*for (j; wcscpy(tmp, '\0') != 0; j++)
+			{
+				ListStudents[i].SoThich[j] = tmp;
+			}
+			//tempStudent.ID = atoi(buf);
+			*/
+			i++;
+			flag = -1;
+			if (flag == -1)
+			for (i = 0; i <= sizeof(ListStudents); i++)
+			{
+				if (ListStudents[i].MSSV != 0)
+				wprintf(L"MSSV: %s\n", ListStudents[i].MSSV);
+				wprintf(L"Họ tên: %s\n", ListStudents[i].HoTen);
+				wprintf(L"Khoa: %s\n", ListStudents[i].Khoa);
+				wprintf(L"Khoa' hoc: %s\n", ListStudents[i].KhoaHoc);
+				wprintf(L"Ngay sinh: %s\n", ListStudents[i].NgaySinh);
+				/*
+				for (int k = 0; k < j; k++)
+					printf("So thich: %s\n", ListStudents[i].SoThich);
+					*/
+			}
+
+			fclose(fin);
+		}
+	}
+	
+	wprintf(L" Xin chào, á hi hi hi hi\n");
+	
+	getwc(stdin);
+	
+}
+	//wchar_t *tmp = L"Nguyễn Trí Vinh";
+	//wprintf(L"%s", tmp);
+	//wprintf(L">> Xin chào, %ls!\n\n", username);
+	//getwc(stdin);
