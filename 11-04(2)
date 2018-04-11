@@ -27,21 +27,15 @@ void AddProfile(SV sv)
 	_setmode(_fileno(stdout), _O_U16TEXT); //needed for output
 	_setmode(_fileno(stdin), _O_U16TEXT); //needed for input
 
-	FILE* fout = _wfopen(ten, L"w+, ccs=UTF-8");
+	FILE* fout = _wfopen(L"file.html", L"w+, ccs=UTF-8");
 	if (!fout) {
 		wprintf(L"Không thể tạo file list.html\n");
 	}
 	else{
 		fwprintf(fout, L"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"personal.css\" />\r\n<title>HCMUS - %s</title>\r\n</head>\r\n<body>\r\n<div class=\"Layout_container\">\r\n<!-- Begin Layout Banner Region -->\r\n<div class=\"Layout_Banner\" >\r\n<div><img id=\"logo\" src=\"Images/logo.jpg\" height=\"105\" /></div>\r\n<div class=\"Header_Title\">TRƯỜNG ĐẠI HỌC KHOA HỌC TỰ NHIÊN </div>\r\n</div>\r\n<!-- End Layout Banner Region -->\r\n<!-- Begin Layout MainContents Region -->\r\n<div class=\"Layout_MainContents\">\r\n<!-- Begin Below Banner Region -->\r\n<div class=\"Personal_Main_Information\">\r\n<!-- Begin Thông tin cá nhân c?a th?y cô ----------------------------------------------------------------------------------------- -->\r\n<div class=\"Personal_Location\">\r\n<img src=\"Images/LogoFooter.jpg\" width=\"27\" height=\"33\" />\r\n<span class=\"Personal_FullName\">%s - %s</span>\r\n<div class=\"Personal_Department\">%s</div>\r\n<br />\r\n<div class=\"Personal_Phone\">\r\nEmail: nva@gmail.com\r\n</div>\r\n<br />\r\n<br />                   \r\n</div>\r\n<!-- End Thông tin cá nhân c?a th?y cô ----------------------------------------------------------------------------------------- -->\r\n<div class=\"Personal_HinhcanhanKhung\">\r\n<img src=\"Images/HinhCaNhan.jpg\" class=\"Personal_Hinhcanhan\" />\r\n</div>\r\n</div>\r\n<!-- End Below Banner Region -->\r\n<!-- Begin MainContents Region -->\r\n<div class=\"MainContain\">\r\n\r\n<!-- Begin Top Region -->\r\n<div class=\"MainContain_Top\">\r\n\r\n<div class=\"InfoGroup\">Thông tin cá nhân</div>\r\n<div>\r\n<ul class=\"TextInList\">\r\n<li>Họ và tên: %s</li>\r\n<li>MSSV: %s</li>\r\n<li>Sinh viên khoa %s</li>\r\n<li>Ngày sinh: %s</li>\r\n<li>Email: nva@gmail.com</li>\r\n</ul>\r\n</div>\r\n<div class=\"InfoGroup\">Sở thích</div>\r\n<div>\r\n<ul class=\"TextInList\">\r\n<li>Âm nhạc: POP, Balad</li>\r\n<li>Ẩm thực: bún riêu, bún thịt nướng</li>\r\n</ul>\r\n</div>\r\n<div class=\"InfoGroup\">Mô tả</div>\r\n<div class=\"Description\">\r\n%s.\r\n</div>\r\n\r\n</div>\r\n</div>\r\n</div>\r\n\r\n<!-- Begin Layout Footer -->\r\n<div class=\"Layout_Footer\">\r\n<div class=\"divCopyright\">\r\n<br />\r\n<img src=\"Images/LogoFooter_gray.jpg\" width=\"34\" height=\"41\" /><br />\r\n<br />\r\n@2018</br>\r\nĐồ án giữ kỳ</br>\r\nKỹ thuật lập trình</br>\r\nTH2012/03</br>\r\n1712913 - Nguyễn Trí Vinh</br>\r\n</div>\r\n</div>\r\n<!-- End Layout Footer -->\r\n</div>\r\n</body>\r\n</html>", sv.HoTen,sv.HoTen,sv.MSSV,sv.Khoa,sv.HoTen,sv.MSSV,sv.Khoa,sv.NgaySinh,sv.MTBT);
-		//fputws(L"<!DOCTYPE html PUBLIC \" -//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns = \"http://www.w3.org/1999/xhtml\">\n<head>\n<meta http - equiv = \"Content-Type\" content = \"text/html; charset=utf-8\" / >\n<link rel = \"stylesheet\" type = \"text/css\" href = \"personal.css\" / >\n<title>HCMUS - %s",fout,)
 		fclose(fout);
 	}
 }
-
-
-
-
-
 
 void wmain()
 {
@@ -91,7 +85,10 @@ void wmain()
 			tmp = wcstok(NULL, L"\n");
 			sv.SoThich = tmp;
 
+
+
 			AddProfile(sv);
+
 			wprintf(L"MSSV: %s\n", sv.MSSV);
 			wprintf(L"Họ tên: %s\n", sv.HoTen);
 			wprintf(L"Khoa: %s\n", sv.Khoa);
@@ -99,7 +96,7 @@ void wmain()
 			wprintf(L"Ngày sinh: %s\n", sv.NgaySinh);
 			wprintf(L"Mô tả bản thân: %s\n", sv.MTBT);
 			wprintf(L"Sở thích: %s\n\n", sv.SoThich);
-
+			getwc(stdin);
 			i++;
 
 		}	
